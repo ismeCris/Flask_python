@@ -15,7 +15,6 @@ def lista_clientes():
 def inserir_cliente():
     pass
 
-
 @cliente_route.route('/new')
 def form_cliente():
     return render_template('form_cliente.html')
