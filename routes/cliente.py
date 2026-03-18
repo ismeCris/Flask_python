@@ -1,11 +1,9 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, request
 from database.clientes import CLIENTES
 
 cliente_route = Blueprint('cliente', __name__)  
 
 from flask import Blueprint, render_template
-
-cliente_route = Blueprint('cliente', __name__)
 
 @cliente_route.route('/')
 def lista_clientes():
@@ -13,9 +11,16 @@ def lista_clientes():
     return render_template('lista_clientes.html', clientes=CLIENTES)
     
 
-@cliente_route.route('/', methods=['POST'])
-def inserir_cliente():
-    pass
+@cliente_route.route('/', methods=['POST']) 
+def inserir_cliente(): 
+    data = request.json 
+    novo_usuario = { 
+        'id': len(CLIENTES) + 1, 
+        'nome': data['nome'],
+          'email': data['email'] }
+    CLIENTES.append(novo_usuario) 
+    return render_template('item_cliente.html', cliente=novo_usuario)
+
 
 @cliente_route.route('/new')
 def form_cliente():
@@ -29,14 +34,27 @@ def detalhe_cliente(cliente_id):
 
 @cliente_route.route('/<int:cliente_id>/editar')
 def form_editar_cliente(cliente_id):
-    return render_template('form_editar_cliente.html')
+    cliente = None
+    for c in CLIENTES:
+        if c['id'] == cliente_id:
+            cliente = c
+    return render_template('form_cliente.html', cliente=cliente)
 
 
-@cliente_route.route('/<int:cliente_id>/update', methods=['PUT'])
+@cliente_route.route('/<int:cliente_id>/update', methods=['POST'])
 def atualizar_cliente(cliente_id):
-    pass
-
+    cliente_editado = None
+    data = request.json
+    for c in CLIENTES:
+        if c['id'] == cliente_id:
+            c['nome'] = data.get('nome')
+            c['email'] = data.get('email')
+            cliente_editado = c
+            return render_template('item_cliente.html', cliente=cliente_editado)
+        
 
 @cliente_route.route('/<int:cliente_id>/excluir', methods=['DELETE'])
 def deletar_cliente(cliente_id):
-    pass
+    global CLIENTES
+    CLIENTES = [c for c in CLIENTES if c['id'] != cliente_id]
+    return '', 204

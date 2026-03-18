@@ -1,0 +1,20 @@
+<tr id="cliente-{{ cliente['id'] }}">
+  <td class="fw-bold">{{ cliente['id'] }}</td>
+  <td>{{ cliente['nome'] }}</td>
+  <td class="text-muted">{{ cliente['email'] }}</td>
+  <td class="text-center">
+     
+    <button class="btn btn-sm btn-outline-success rounded-pill"
+            c-get="{{ url_for('cliente.form_editar_cliente', cliente_id=cliente['id']) }}"
+            c-target="#form-cliente">
+        Editar
+    </button>
+
+    <button class="btn btn-sm btn-outline-danger rounded-pill" 
+            c-delete="{{ url_for('cliente.deletar_cliente', cliente_id=cliente['id']) }}"
+            c-remove-closest="tr">
+        Excluir
+    </button>
+
+  </td>
+</tr>

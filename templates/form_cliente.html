@@ -1,14 +1,46 @@
-<form class="c-form">
-  
-    <div class="mb-3">
-    <label class="form-label">nome</label>
-    <input type="text" class="form-control" id="exampleInputEmail1">
-</div>
+<div class="container mt-4">
 
-  <div class="mb-3">
-    <label  class="form-label">Email </label>
-    <input type="email" class="form-control" id="exampleInputEmail1" >
+  <div class="d-flex justify-content-center">
+
+    <div class="card p-3 shadow-sm" style="width: 280px; border-radius: 12px;">
+      
+      <h5 class="text-center mb-3">Criar Cliente</h5>
+
+    <form class="c-form" 
+        {% if cliente %}
+            action="{{ url_for('cliente.atualizar_cliente', cliente_id=cliente.id) }}" 
+        {% else %}
+            action="{{ url_for('cliente.inserir_cliente') }}" 
+        {% endif %}
+
+        method="{% if cliente %}POST{% else %}POST{% endif %}"
+
+        {% if cliente %}
+            c-swap="#cliente-{{cliente.id}}"
+        {% else %}
+            c-append="#lista-clientes"
+        {% endif %}
+
+        c-reload-container="true">
+   
+        <div class="mb-2">
+          <label class="form-label small">Nome</label>
+         <input type="text" class="form-control form-control-sm rounded-pill" name="nome" {% if cliente%}value="{{cliente.nome}}"{% endif %}>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label small">Email</label>
+          <input type="email" class="form-control form-control-sm rounded-pill" name="email"  {% if cliente%}value="{{cliente.email}}"{% endif %}>
+        </div>
+
+         <button type="submit" class="btn btn-primary">
+        {% if cliente %}Salvar{% else %}Criar{% endif %}
+    </button>
+
+      </form>
+
     </div>
-  
-  <button type="submit" class="btn btn-primary">Criar Cliente</button>
-</form>
+
+  </div>
+
+</div>
