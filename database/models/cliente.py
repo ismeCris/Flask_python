@@ -1,12 +1,12 @@
-from peewee import DateTimeField, Model, CharField
+from peewee import Model, CharField, DateTimeField
 from database.database import db
 import datetime
 
 class Cliente(Model):
-    name = CharField()
+    # Changed to 'nome' to match your route, or update the route to 'name'
+    nome = CharField() 
     email = CharField()
     data_registro = DateTimeField(default=datetime.datetime.now)
 
     class Meta:
         database = db
-
